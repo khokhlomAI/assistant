@@ -1,8 +1,10 @@
 ollama_host: "http://localhost:11434"
 llm:
-  model: "qwen2.5:7b"              # Ollama: qwen2.5:7b | OpenRouter: deepseek/deepseek-chat
-  provider: "ollama"               # ollama | openrouter
-  api_key: ""                      # ОСТАВЬ ПУСТЫМ! Ключ в OPENROUTER_API_KEY env
+  model: "deepseek-chat"                 # deepseek-chat / deepseek-reasoner
+  provider: "deepseek"                  # ollama | deepseek | openrouter
+  api_key: ""                           # ОСТАВЬ ПУСТЫМ! Используй env:
+                                        #   DEEPSEEK_API_KEY для deepseek
+                                        #   OPENROUTER_API_KEY для openrouter
 obsidian:
   vault: "C:/Users/Fallki/Obsidian"
   notes_subdir: "daily"

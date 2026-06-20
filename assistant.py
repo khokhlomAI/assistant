@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Personal AI assistant — Ollama (local) or OpenRouter (DeepSeek)."""
+"""Personal AI assistant — Ollama (local), DeepSeek (direct), or OpenRouter."""
 
 import os
 import re
@@ -40,9 +40,9 @@ def ollama_generate(host, model, system, user_text):
     return resp.json()["response"].strip()
 
 
-def openrouter_generate(api_key, model, system, user_text):
+def _chat_completion(url, api_key, model, system, user_text):
     resp = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
+        url,
         headers={"Authorization": f"Bearer {api_key}"},
         json={
             "model": model,
@@ -55,6 +55,14 @@ def openrouter_generate(api_key, model, system, user_text):
     )
     resp.raise_for_status()
     return resp.json()["choices"][0]["message"]["content"].strip()
+
+
+def openrouter_generate(api_key, model, system, user_text):
+    return _chat_completion("https://openrouter.ai/api/v1/chat/completions", api_key, model, system, user_text)
+
+
+def deepseek_generate(api_key, model, system, user_text):
+    return _chat_completion("https://api.deepseek.com/v1/chat/completions", api_key, model, system, user_text)
 
 
 # ── Action Parsing ────────────────────────────────────
@@ -216,6 +224,12 @@ def main():
                     print("Ошибка: укажи OPENROUTER_API_KEY в переменных окружения")
                     continue
                 response = openrouter_generate(api_key, model, system, text)
+            elif provider_name == "deepseek":
+                api_key = os.environ.get("DEEPSEEK_API_KEY", "") or llm_cfg.get("api_key", "")
+                if not api_key:
+                    print("Ошибка: укажи DEEPSEEK_API_KEY в переменных окружения")
+                    continue
+                response = deepseek_generate(api_key, model, system, text)
             else:
                 host = cfg.get("ollama_host", "http://localhost:11434")
                 response = ollama_generate(host, model, system, text)
