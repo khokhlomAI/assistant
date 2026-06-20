@@ -1,0 +1,11 @@
+ollama_host: "http://localhost:11434"
+llm:
+  model: "qwen2.5:7b"              # Ollama: qwen2.5:7b | OpenRouter: deepseek/deepseek-chat
+  provider: "ollama"               # ollama | openrouter
+  api_key: ""                      # OpenRouter key: https://openrouter.ai/keys
+obsidian:
+  vault: "C:/Users/Fallki/Obsidian"
+  notes_subdir: "daily"
+  wiki_subdir: "wiki"
+  prompts_subdir: "prompts"
+  tz_subdir: "tz"
