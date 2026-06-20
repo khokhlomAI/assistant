@@ -211,9 +211,9 @@ def main():
 
         try:
             if provider_name == "openrouter":
-                api_key = llm_cfg.get("api_key", "") or os.environ.get("OPENROUTER_API_KEY", "")
+                api_key = os.environ.get("OPENROUTER_API_KEY", "") or llm_cfg.get("api_key", "")
                 if not api_key:
-                    print("Ошибка: укажи api_key в config.yml или OPENROUTER_API_KEY в env")
+                    print("Ошибка: укажи OPENROUTER_API_KEY в переменных окружения")
                     continue
                 response = openrouter_generate(api_key, model, system, text)
             else:
